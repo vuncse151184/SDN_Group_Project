@@ -6,7 +6,7 @@ const directionSchema = new Schema(
     directionId: { type: mongoose.Types.ObjectId, required: true },
     directionNum: { type: Number, require: true },
     directionDesc: { type: String, require: true },
-    directionImage: { type: String, require: true },
+    directionImage: { type: String },
   },
   { timestamps: true }
 );
@@ -39,7 +39,7 @@ const recipeSchema = new Schema(
       ref: "Ages",
       require: true,
     },
-    forPremium: { type: Boolean, require: true },
+    forPremium: { type: Boolean, require: true, default: true },
     directionVMs: [directionSchema],
     ingredientOfRecipeVMs: {
       type: mongoose.Schema.Types.ObjectId,
