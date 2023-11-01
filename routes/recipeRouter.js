@@ -2,17 +2,10 @@ const express = require("express");
 const recipeRouter = express.Router();
 const recipeController = require("../Controller/recipeController");
 
-// function addUserDataToRequest(req, res, next) {
-//   if (req.isAuthenticated()) {
-//     req.user = req.user;
-//   }
-//   next();
-// }
-// const { ensureAuthenticated } = require("../config/auth");
-
 recipeRouter
   .route("/")
   .get(recipeController.index)
+  .get(recipeController.mostFavorite)
   .post(recipeController.create);
 
 recipeRouter
