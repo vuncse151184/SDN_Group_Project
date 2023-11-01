@@ -3,27 +3,54 @@ const Recipes = require("../Model/recipe");
 class recipeController {
   index(req, res, next) {
     Recipes.find({})
+      .sort({ createdAt: -1 })
       .populate("meal", "mealName")
       .populate("age", "ageName")
-      .then((recipe) => {
+      .then((recipes) => {
         const dataRecipe = {
           status: "Success",
-          data: [
-            {
-              recipeId: recipe.recipeId,
-              recipeName: recipe.recipeName,
-              mealId: recipe.meal.mealId,
-              mealName: recipe.meal.mealName,
-              recipeImage: recipe.recipeImage,
-              ageId: recipe.age.ageId,
-              ageName: recipe.age.ageName,
-              isFavorite: false,
-              totalFavorite: 0,
-              totalRate: 1,
-              aveRate: 5,
-              forPremium: recipe.forPremium,
-            },
-          ],
+          data: recipes.map((recipe) => ({
+            recipeId: recipe.recipeId,
+            recipeName: recipe.recipeName,
+            mealId: recipe.meal.mealId,
+            mealName: recipe.meal.mealName,
+            recipeImage: recipe.recipeImage,
+            ageId: recipe.age.ageId,
+            ageName: recipe.age.ageName,
+            isFavorite: false,
+            totalFavorite: recipe.totalFavorite,
+            totalRate: 1,
+            aveRate: 5,
+            forPremium: recipe.forPremium,
+          })),
+        };
+        res.json(dataRecipe);
+      })
+      .catch(next);
+  }
+
+  mostFavorite(req, res, next) {
+    Recipes.find({})
+      .sort({ totalFavorite: -1 })
+      .populate("meal", "mealName")
+      .populate("age", "ageName")
+      .then((recipes) => {
+        const dataRecipe = {
+          status: "Success",
+          data: recipes.map((recipe) => ({
+            recipeId: recipe.recipeId,
+            recipeName: recipe.recipeName,
+            mealId: recipe.meal.mealId,
+            mealName: recipe.meal.mealName,
+            recipeImage: recipe.recipeImage,
+            ageId: recipe.age.ageId,
+            ageName: recipe.age.ageName,
+            isFavorite: false,
+            totalFavorite: recipe.totalFavorite,
+            totalRate: 1,
+            aveRate: 5,
+            forPremium: recipe.forPremium,
+          })),
         };
         res.json(dataRecipe);
       })
