@@ -7,7 +7,6 @@ class recipeController {
       .populate("meal", "mealName")
       .populate("age", "ageName")
       .then((recipes) => {
-        console.log("Token recipe", req.user);
         const dataRecipe = {
           status: "Success",
           data: recipes.map((recipe) => ({
