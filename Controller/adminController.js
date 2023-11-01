@@ -81,7 +81,9 @@ class adminController {
 
             const payload = {
                 username: user.username,
-                id: user._id
+                id: user._id,
+                isAdmin: user.isAdmin
+
             }
 
             const token = jwt.sign(payload, "Random string", { expiresIn: "1d" })

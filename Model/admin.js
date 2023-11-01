@@ -9,6 +9,10 @@ const adminSchema = new Schema({
     password: {
         type: String,
         require: true
+    },
+    isAdmin: {
+        type: Boolean,
+        default: true
     }
 }, { timestamps: true, });
 
