@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const orchidSchema = new Schema({
+const userSchema = new Schema({
     name: {
         type: String,
         require: true
@@ -27,5 +27,5 @@ const orchidSchema = new Schema({
 }, { timestamps: true, });
 
 
-const Orchids = mongoose.model('Orchids', orchidSchema)
-module.exports = Orchids
+const Users = mongoose.model('Users', userSchema)
+module.exports = Users
