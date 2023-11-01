@@ -1,24 +1,20 @@
-const passport = require('passport');
-var JwtStrategy = require('passport-jwt').Strategy,
-    ExtractJwt = require('passport-jwt').ExtractJwt;
+const jwt = require('jsonwebtoken')
 
-var opts = {}
-opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-opts.secretOrKey = 'VFOMdK/1VxJhm5eJFHu82i40/AE+J/DMO0hgn8W/XHU=1';
-opts.issuer = 'your-issuer';
-opts.audience = 'http://localhost:3000';
-module.exports = function (passport) {
-    passport.use(new JwtStrategy(opts, function (jwt_payload, done) {
-        User.findOne({ id: jwt_payload.sub }, function (err, user) {
-            if (err) {
-                return done(err, false);
-            }
-            if (user) {
-                return done(null, user);
-            } else {
-                return done(null, false);
-                // or you could create a new account
-            }
-        });
-    }));
-};
+module.exports = {
+    authenToken: function (req, res, next) {
+        // console.log(req.headers['authorization'])
+        const authorizationClient = req.headers['authorization'];
+        const token = authorizationClient && authorizationClient.split(' ')[1]
+        console.log(token)
+        if (!token) return res.sendStatus(401)
+
+        try {
+            const decoded = jwt.verify(token, "Random string")
+            console.log("decode:", decoded)
+            req.user = decoded;
+            next();
+        } catch (e) {
+            return res.sendStatus(403)
+        }
+    }
+}

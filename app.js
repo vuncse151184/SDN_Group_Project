@@ -1,14 +1,13 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 const passport = require('passport');
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const cors = require('cors');
+require('./config/jwt');
 
-require('./config/jwt')(passport);
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -23,25 +22,24 @@ app.use(passport.initialize());
 
 const mongoose = require("mongoose");
 mongoose.set('strictQuery', true);
-var adminRouter = require("./routes/adminRouter");
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+
+
+const adminRouter = require("./routes/adminRouter");
+const recipeRouter = require("./routes/recipeRouter");
+app.use(cors())
 app.use('/admins', adminRouter);
+app.use('/recipes', recipeRouter);
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
 });
 
-
-const url = 'mongodb://127.0.0.1:27017/group-project-SDN'
+const url = 'mongodb://127.0.0.1:27017/group-project-SDN';
 const connect = mongoose.connect(url);
 connect.then((db) => {
   console.log("connect Ok");
 });
-
-
-
-
 // error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development

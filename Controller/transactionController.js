@@ -3,7 +3,8 @@ const admin = require('../Model/admin')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 const Admins = require('../Model/admin');
-class adminController {
+const Payments = require('../Model/payment');
+class transactionController {
 
     // form(req, res, next) {
     //     res.json({
@@ -155,4 +156,4 @@ class adminController {
     //     })
     // }
 }
-module.exports = new adminController()
+module.exports = new transactionController()
