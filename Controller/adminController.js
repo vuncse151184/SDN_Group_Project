@@ -92,6 +92,13 @@ class adminController {
                 success: true,
                 message: "Logged in successfull ",
                 token: "Bearer " + token,
+                data: {
+                    role: user.isAdmin,
+                    id: user._id,
+                    username: user.username,
+                    
+                }
+                
             })
         })
     }
