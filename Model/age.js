@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const ageSchema = new Schema(
   {
-    ageId: { type: mongoose.Types.ObjectId, required: true },
+   
     ageName: { type: String, require: true },
     isDelete: { type: Boolean, default: false },
   },

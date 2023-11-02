@@ -6,25 +6,21 @@ class recipeController {
       .sort({ createdAt: -1 })
       .populate("meal", "mealName")
       .populate("age", "ageName")
+      .populate("ingredientOfRecipeVMs")
       .then((recipes) => {
-        const dataRecipe = {
-          status: "Success",
-          data: recipes.map((recipe) => ({
-            recipeId: recipe.recipeId,
-            recipeName: recipe.recipeName,
-            mealId: recipe.meal.mealId,
-            mealName: recipe.meal.mealName,
-            recipeImage: recipe.recipeImage,
-            ageId: recipe.age.ageId,
-            ageName: recipe.age.ageName,
-            isFavorite: false,
-            totalFavorite: recipe.totalFavorite,
-            totalRate: 1,
-            aveRate: 5,
-            forPremium: recipe.forPremium,
-          })),
-        };
-        res.json(dataRecipe);
+        console.log(recipes);
+        if (req.user.isAdmin) {
+          const dataRecipe = {
+            status: "Success",
+            data: recipes,
+          };
+          res.json(dataRecipe);
+        } else {
+          res.json({
+            status: "Failed",
+            message: "Role denied",
+          });
+        }
       })
       .catch(next);
   }
@@ -37,20 +33,21 @@ class recipeController {
       .then((recipes) => {
         const dataRecipe = {
           status: "Success",
-          data: recipes.map((recipe) => ({
-            recipeId: recipe.recipeId,
-            recipeName: recipe.recipeName,
-            mealId: recipe.meal.mealId,
-            mealName: recipe.meal.mealName,
-            recipeImage: recipe.recipeImage,
-            ageId: recipe.age.ageId,
-            ageName: recipe.age.ageName,
-            isFavorite: false,
-            totalFavorite: recipe.totalFavorite,
-            totalRate: 1,
-            aveRate: 5,
-            forPremium: recipe.forPremium,
-          })),
+          data: recipes,
+          // .map((recipe) => ({
+          //   recipeId: recipe.recipeId,
+          //   recipeName: recipe.recipeName,
+          //   mealId: recipe.meal.mealId,
+          //   mealName: recipe.meal.mealName,
+          //   recipeImage: recipe.recipeImage,
+          //   ageId: recipe.age.ageId,
+          //   ageName: recipe.age.ageName,
+          //   isFavorite: false,
+          //   totalFavorite: recipe.totalFavorite,
+          //   totalRate: 1,
+          //   aveRate: 5,
+          //   forPremium: recipe.forPremium,
+          // })),
         };
         res.json(dataRecipe);
       })

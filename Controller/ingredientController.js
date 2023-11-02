@@ -7,7 +7,6 @@ class ingredientController {
         const dataIngredient = {
           status: "Success",
           data: ingredients.map((ingredient) => ({
-            ingredientId: ingredient.ingredientId,
             ingredientName: ingredient.ingredientName,
             measure: ingredient.measure,
             protein: ingredient.protein,
