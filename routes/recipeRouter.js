@@ -6,16 +6,18 @@ const { authenToken } = require("../config/jwt");
 recipeRouter
   .route("/")
   .get(authenToken, recipeController.index)
-  .get(authenToken, recipeController.mostFavorite)
-  .post(authenToken, recipeController.create);
+  .get(authenToken, recipeController.mostFavorite);
+
+recipeRouter.route("/create-recipe").post(authenToken, recipeController.create);
+recipeRouter
+  .route("/detail-recipe/:recipeId")
+  .get(authenToken, recipeController.detail);
+
+recipeRouter.route("/edit/:recipeId").put(authenToken, recipeController.update);
+// .get(authenToken, recipeController.detail)
 
 recipeRouter
-  .route("/edit/:recipedId")
-  .get(authenToken, recipeController.detail)
-  .put(authenToken, recipeController.update);
-
-recipeRouter
-  .route("/delete/:recipedId")
-  .get(authenToken, recipeController.remove);
+  .route("/delete-recipe/:recipeId")
+  .delete(authenToken, recipeController.remove);
 
 module.exports = recipeRouter;

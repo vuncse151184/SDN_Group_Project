@@ -10,13 +10,6 @@ const directionSchema = new Schema(
   { timestamps: true }
 );
 
-const favoriteSchema = new Schema(
-  {
-    recipeId: { type: mongoose.Types.ObjectId, required: true },
-  },
-  { timestamps: true }
-);
-
 const recipeSchema = new Schema(
   {
     recipeName: { type: String, require: true },
@@ -41,9 +34,15 @@ const recipeSchema = new Schema(
     directionVMs: [directionSchema],
     ingredientOfRecipeVMs: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Ingredients",
-        require: true,
+        ingredientId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Ingredients",
+          require: true,
+        },
+        quantity: {
+          type: Number,
+          require: false,
+        },
       },
     ],
   },
