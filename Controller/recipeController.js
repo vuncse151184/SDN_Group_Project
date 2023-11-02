@@ -2,6 +2,7 @@ const Recipes = require("../Model/recipe");
 
 class recipeController {
   index(req, res, next) {
+    console.log(req.user)
     Recipes.find({})
       .sort({ createdAt: -1 })
       .populate("meal", "mealName")

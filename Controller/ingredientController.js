@@ -6,14 +6,7 @@ class ingredientController {
       .then((ingredients) => {
         const dataIngredient = {
           status: "Success",
-          data: ingredients.map((ingredient) => ({
-            ingredientName: ingredient.ingredientName,
-            measure: ingredient.measure,
-            protein: ingredient.protein,
-            carbohydrate: ingredient.carbohydrate,
-            fat: ingredient.fat,
-            calories: ingredient.calories,
-          })),
+          data: ingredients
         };
         res.json(dataIngredient);
       })
