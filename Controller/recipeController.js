@@ -2,14 +2,12 @@ const Recipes = require("../Model/recipe");
 
 class recipeController {
   index(req, res, next) {
-    console.log(req.user)
     Recipes.find({})
       .sort({ createdAt: -1 })
       .populate("meal", "mealName")
       .populate("age", "ageName")
       .populate("ingredientOfRecipeVMs")
       .then((recipes) => {
-        console.log(recipes);
         if (req.user.isAdmin) {
           const dataRecipe = {
             status: "Success",
@@ -35,20 +33,6 @@ class recipeController {
         const dataRecipe = {
           status: "Success",
           data: recipes,
-          // .map((recipe) => ({
-          //   recipeId: recipe.recipeId,
-          //   recipeName: recipe.recipeName,
-          //   mealId: recipe.meal.mealId,
-          //   mealName: recipe.meal.mealName,
-          //   recipeImage: recipe.recipeImage,
-          //   ageId: recipe.age.ageId,
-          //   ageName: recipe.age.ageName,
-          //   isFavorite: false,
-          //   totalFavorite: recipe.totalFavorite,
-          //   totalRate: 1,
-          //   aveRate: 5,
-          //   forPremium: recipe.forPremium,
-          // })),
         };
         res.json(dataRecipe);
       })
@@ -56,8 +40,50 @@ class recipeController {
   }
 
   create(req, res, next) {
-    const recipe = new Recipes(req.body);
-    recipeController
+    if (req.body.recipeName.trim() === "") {
+      res.json({
+        status: "Failed",
+        message: "Name cannot empty",
+      });
+    } else if (req.body.recipeDesc.trim() === "") {
+      res.json({
+        status: "Failed",
+        message: "Description cannot empty",
+      });
+    } else if (req.body.meal.trim() === "") {
+      res.json({
+        status: "Failed",
+        message: "Meal cannot empty",
+      });
+    } else if (req.body.age.trim() === "") {
+    } else if (req.body.directionVMs.length === 0) {
+      res.json({
+        status: "Failed",
+        message: "Directions cannot empty",
+      });
+    } else if (req.body.ingredientOfRecipeVMs.length === 0) {
+      res.json({
+        status: "Failed",
+        message: "Ingredient cannot empty",
+      });
+    }
+    const recipe = new Recipes({
+      recipeName: req.body.recipeName,
+      recipeDesc: req.body.recipeDesc,
+      prepareTime: req.body.prepareTime,
+      standTime: req.body.standTime,
+      cookTime: req.body.cookTime,
+      totalTime: req.body.totalTime || 0,
+      servings: req.body.servings,
+      meal: req.body.meal,
+      recipeImage: req.body.recipeImage,
+      age: req.body.age,
+      forPremium: req.body.forPremium,
+      directionVMs: req.body.directionVMs,
+      ingredientOfRecipeVMs: req.body.ingredientOfRecipeVMs,
+    });
+
+    recipe
       .save()
       .then(() =>
         res.json({
@@ -65,56 +91,100 @@ class recipeController {
           message: "Add Success",
         })
       )
-      .catch((error) => {});
+      .catch((error) =>
+        res.json({
+          status: "Failed",
+          message: "Add Failed",
+        })
+      );
   }
 
   detail(req, res, next) {
     const recipeId = req.params.recipeId;
-    Orchids.findById(recipeId)
-      .populate("category", "name")
+    Recipes.findById(recipeId)
+      .populate("meal", "mealName")
       .populate("age", "ageName")
       .populate("ingredientOfRecipeVMs")
       .then((recipe) => {
+        const directionVMs = recipe.directionVMs.map((x) => ({
+          directionNum: x.directionNum,
+          directionDesc: x.directionDesc,
+          directionImage: x.directionImage,
+        }));
+        const ingredientOfRecipeVMs = recipe.ingredientOfRecipeVMs.map((x) => ({
+          ingredientId: x.ingredientId,
+          quantity: x.quantity,
+        }));
         const dataRecipe = {
           status: "Success",
           isPremium: false,
-          data: [
-            {
-              recipeId: recipe.recipeId,
-              recipeName: recipe.recipeName,
-              mealId: recipe.meal.mealId,
-              mealName: recipe.meal.mealName,
-              recipeImage: recipe.recipeImage,
-              recipeDesc: recipe.recipeDesc,
-              prepareTime: recipe.prepareTime,
-              standTime: recipe.standTime,
-              cookTime: recipe.cookTime,
-              totalTime: recipe.totalTime,
-              servings: recipe.servings,
-              protein: 0,
-              carbohydrate: 0,
-              fat: 0,
-              calories: 0,
-              ageId: recipe.age.ageId,
-              ageName: recipe.age.ageName,
-              isFavorite: false,
-              totalFavorite: 0,
-              totalRate: 1,
-              aveRate: 5,
-              forPremium: recipe.forPremium,
-              cusRating: "",
-              directionVMs: recipe.directionVMs,
-              ingredientOfRecipeVMs: recipe.ingredientOfRecipeVMs,
-              ratingVMs: [],
-            },
-          ],
+          data: {
+            _id: recipe._id,
+            recipeName: recipe.recipeName,
+            recipeDesc: recipe.recipeDesc,
+            prepareTime: recipe.prepareTime,
+            standTime: recipe.standTime,
+            cookTime: recipe.cookTime,
+            totalTime: recipe.totalTime || 0,
+            servings: recipe.servings,
+            meal: recipe.meal,
+            recipeImage: recipe.recipeImage,
+            age: recipe.age,
+            forPremium: recipe.forPremium,
+            directionVMs: directionVMs,
+            ingredientOfRecipeVMs: ingredientOfRecipeVMs,
+          },
         };
         res.json(dataRecipe);
       });
   }
 
   update(req, res, next) {
-    Recipes.updateOne({ recipeId: req.params.recipeId }, req.body).then(() => {
+    if (req.body.recipeName.trim() === "") {
+      res.json({
+        status: "Failed",
+        message: "Name cannot empty",
+      });
+    } else if (req.body.recipeDesc.trim() === "") {
+      res.json({
+        status: "Failed",
+        message: "Description cannot empty",
+      });
+    } else if (req.body.meal.trim() === "") {
+      res.json({
+        status: "Failed",
+        message: "Meal cannot empty",
+      });
+    } else if (req.body.age.trim() === "") {
+    } else if (req.body.directionVMs.length === 0) {
+      res.json({
+        status: "Failed",
+        message: "Directions cannot empty",
+      });
+    } else if (req.body.ingredientOfRecipeVMs.length === 0) {
+      res.json({
+        status: "Failed",
+        message: "Ingredient cannot empty",
+      });
+    }
+    Recipes.updateOne(
+      { recipeId: req.params.recipeId },
+      {
+        recipeName: req.body.recipeName,
+        recipeDesc: req.body.recipeDesc,
+        prepareTime: req.body.prepareTime,
+        standTime: req.body.standTime,
+        cookTime: req.body.cookTime,
+        totalTime: req.body.totalTime || 0,
+        servings: req.body.servings,
+        meal: req.body.meal,
+        recipeImage: req.body.recipeImage,
+        age: req.body.age,
+        forPremium: req.body.forPremium,
+        directionVMs: req.body.directionVMs,
+        ingredientOfRecipeVMs: req.body.ingredientOfRecipeVMs,
+      }
+    ).then(() => {
       res.json({
         status: "Success",
         message: "Update Success",
@@ -123,7 +193,7 @@ class recipeController {
   }
 
   remove(req, res, next) {
-    Recipes.findByIdAndDelete({ recipeId: req.params.recipeId }).then(() => {
+    Recipes.findByIdAndDelete({ _id: req.params.recipeId }).then(() => {
       res.json({
         status: "Success",
         message: "Remove Success",

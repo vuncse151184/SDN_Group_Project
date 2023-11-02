@@ -6,11 +6,7 @@ class mealController {
       .then((meals) => {
         const dataMeal = {
           status: 1,
-          data: meals.map((meal) => ({
-           
-            isDelete: meal.isDelete,
-            mealName: meal.mealName,
-          })),
+          data: meals,
         };
         res.json(dataMeal);
       })

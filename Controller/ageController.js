@@ -6,11 +6,7 @@ class ageController {
       .then((ages) => {
         const dataAge = {
           status: 1,
-          data: ages.map((age) => ({
-          
-            ageName: age.ageName,
-            isDelete: age.isDelete,
-          })),
+          data: ages,
         };
         res.json(dataAge);
       })
