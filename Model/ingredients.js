@@ -3,7 +3,6 @@ const Schema = mongoose.Schema;
 
 const ingredientSchema = new Schema(
   {
-    ingredientId: { type: mongoose.Types.ObjectId, required: true },
     ingredientName: { type: String, require: true },
     measure: { type: String, require: true },
     protein: { type: Number, require: true },

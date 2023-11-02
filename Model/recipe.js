@@ -3,7 +3,6 @@ const Schema = mongoose.Schema;
 
 const directionSchema = new Schema(
   {
-    directionId: { type: mongoose.Types.ObjectId, required: true },
     directionNum: { type: Number, require: true },
     directionDesc: { type: String, require: true },
     directionImage: { type: String },
@@ -20,7 +19,6 @@ const favoriteSchema = new Schema(
 
 const recipeSchema = new Schema(
   {
-    recipeId: { type: mongoose.Types.ObjectId, required: true },
     recipeName: { type: String, require: true },
     recipeDesc: { type: String, require: true },
     prepareTime: { type: Number, require: true },
@@ -41,11 +39,13 @@ const recipeSchema = new Schema(
     },
     forPremium: { type: Boolean, require: true, default: true },
     directionVMs: [directionSchema],
-    ingredientOfRecipeVMs: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Ingredients",
-      require: true,
-    },
+    ingredientOfRecipeVMs: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Ingredients",
+        require: true,
+      },
+    ],
   },
   { timestamps: true }
 );
