@@ -7,7 +7,7 @@ class ageController {
         const dataAge = {
           status: 1,
           data: ages.map((age) => ({
-            ageId: age.ageId,
+          
             ageName: age.ageName,
             isDelete: age.isDelete,
           })),

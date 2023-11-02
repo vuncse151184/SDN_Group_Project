@@ -26,11 +26,18 @@ mongoose.set('strictQuery', true);
 
 const adminRouter = require("./routes/adminRouter");
 const recipeRouter = require("./routes/recipeRouter");
+const mealRouter = require("./routes/mealRouter");
+const ageRouter = require("./routes/ageRouter");
 const ingredientRouter = require("./routes/ingredientRouter");
+
+
 app.use(cors())
 app.use('/admins', adminRouter);
 app.use('/recipes', recipeRouter);
+app.use('/meals', mealRouter);
+app.use('/ages', ageRouter);
 app.use('/ingredients', ingredientRouter);
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

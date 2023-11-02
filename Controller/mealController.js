@@ -7,7 +7,7 @@ class mealController {
         const dataMeal = {
           status: 1,
           data: meals.map((meal) => ({
-            mealId: meal.mealId,
+           
             isDelete: meal.isDelete,
             mealName: meal.mealName,
           })),

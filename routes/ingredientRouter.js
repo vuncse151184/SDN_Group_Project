@@ -1,7 +1,8 @@
 const express = require("express");
 const ingredientRouter = express.Router();
 const ingredientController = require("../Controller/ingredientController");
-
-ingredientRouter.route("/").get(ingredientController.index);
+const { authenToken } = require('../config/jwt')
+ingredientRouter.route("/")
+.get(ingredientController.index);
 
 module.exports = ingredientRouter;
