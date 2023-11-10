@@ -164,37 +164,46 @@ class recipeController {
         },
       })
       .then((recipe) => {
-        console.log(recipe.ingredientOfRecipeVMs);
-        const directionVMs = recipe.directionVMs.map((x) => ({
-          directionNum: x.directionNum,
-          directionDesc: x.directionDesc,
-          directionImage: x.directionImage,
-        }));
-        const ingredientOfRecipeVMs = recipe.ingredientOfRecipeVMs.map((x) => ({
-          ingredientId: x.ingredientId,
-          quantity: x.quantity,
-        }));
-        const dataRecipe = {
-          status: "Success",
-          isPremium: false,
-          data: {
-            _id: recipe._id,
-            recipeName: recipe.recipeName,
-            recipeDesc: recipe.recipeDesc,
-            prepareTime: recipe.prepareTime,
-            standTime: recipe.standTime,
-            cookTime: recipe.cookTime,
-            totalTime: recipe.totalTime || 0,
-            servings: recipe.servings,
-            meal: recipe.meal,
-            recipeImage: recipe.recipeImage,
-            age: recipe.age,
-            forPremium: recipe.forPremium,
-            directionVMs: directionVMs,
-            ingredientOfRecipeVMs: ingredientOfRecipeVMs,
-          },
-        };
-        res.json(dataRecipe);
+        if (recipe) {
+          console.log(recipe.ingredientOfRecipeVMs);
+          const directionVMs = recipe.directionVMs.map((x) => ({
+            directionNum: x.directionNum,
+            directionDesc: x.directionDesc,
+            directionImage: x.directionImage,
+          }));
+          const ingredientOfRecipeVMs = recipe.ingredientOfRecipeVMs.map(
+            (x) => ({
+              ingredientId: x.ingredientId,
+              quantity: x.quantity,
+            })
+          );
+          const dataRecipe = {
+            status: "Success",
+            isPremium: false,
+            data: {
+              _id: recipe._id,
+              recipeName: recipe.recipeName,
+              recipeDesc: recipe.recipeDesc,
+              prepareTime: recipe.prepareTime,
+              standTime: recipe.standTime,
+              cookTime: recipe.cookTime,
+              totalTime: recipe.totalTime || 0,
+              servings: recipe.servings,
+              meal: recipe.meal,
+              recipeImage: recipe.recipeImage,
+              age: recipe.age,
+              forPremium: recipe.forPremium,
+              directionVMs: directionVMs,
+              ingredientOfRecipeVMs: ingredientOfRecipeVMs,
+            },
+          };
+          res.json(dataRecipe);
+        } else {
+          res.json({
+            status: "Failed",
+            message: "Not found recipe or deleted!",
+          });
+        }
       });
   }
 
